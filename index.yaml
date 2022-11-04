@@ -3,12 +3,12 @@ entries:
   argocd:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-11-04T15:12:37.105455076-05:00"
+    created: "2022-11-04T15:13:04.954672645-05:00"
     description: A Helm chart for Kubernetes
-    digest: 6a69936c60a408a5b69fd9f5e99e76eb8b7dbb9a66f284dbb41c3a35792c7572
+    digest: 5e9242cd444b9f9be46927e4b4992d4524c74185614e42b705f88cb499ea7dfc
     name: argocd
     type: application
     urls:
     - https://tatroc.github.io/helm-package-example/argocd-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-04T15:12:37.100218318-05:00"
+generated: "2022-11-04T15:13:04.949621636-05:00"
