@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-app-{{ .Values.color }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    class: {{ .Values.class }}
+    environment: {{ .Values.environment }}
+    region: {{ .Values.region }}
+#  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: python-app-{{ .Values.color }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: python-app-{{ .Values.color }}
+        class: {{ .Values.class }}
+        environment: {{ .Values.environment }}
+        region: {{ .Values.region }}
+    spec:
+      containers:
+        - name: python-app-{{ .Values.color }}
+          image: tatroc/private:{{ .Values.image_tag }}
+          imagePullPolicy: Always
+          ports:
+            - name: web
+              containerPort: 5000
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 1
+              memory: 256Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi
+      imagePullSecrets:
+        - name: {{ .Values.pull_secret_name }}

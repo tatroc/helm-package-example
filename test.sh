@@ -1,7 +1,6 @@
 #!/bin/bash
-./package.sh --environment prd \
---cluster cluster2 \
---region us-east-1 \
---variants prd \
+./package.sh --environment qat \
+--region us-east-2 \
+--variants npd \
 --cluster-type common \
---application argocd
+--application pythonapp

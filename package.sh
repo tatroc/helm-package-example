@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 ARGUMENT_LIST=(
   "environment"
   "region"
@@ -70,15 +72,27 @@ mkdir -p ../tmp/$UUID
 
 cp -r charts/$CLUSTER_TYPE/$APPLICATION/* ../tmp/$UUID
 
+cp common/values.yaml ../tmp/$UUID/common-values.yaml
 cp region/$REGION/values.yaml ../tmp/$UUID/$REGION-values.yaml
 cp variants/$VARIANTS/values.yaml ../tmp/$UUID/$VARIANTS-values.yaml
-cp env/$ENVIRONMENT/$CLUSTER/values.yaml ../tmp/$UUID/$ENVIRONMENT-$CLUSTER-values.yaml
+
+if [[ -z "${CLUSTER}" ]]; then
+  cp env/$ENVIRONMENT/$APPLICATION/values.yaml ../tmp/$UUID/$ENVIRONMENT-$APPLICATION-values.yaml
+else
+  cp env/$ENVIRONMENT/$CLUSTER/values.yaml ../tmp/$UUID/$ENVIRONMENT-$CLUSTER-values.yaml
+fi
 
 helm package ../tmp/$UUID/
 
+
+helm install --dry-run \
+--set docker_hub_secret=$DOCKER_HUB_SECRET \
+--debug $APPLICATION ../tmp/$UUID/ --values ../tmp/$UUID/common-values.yaml --values ../tmp/$UUID/$REGION-values.yaml --values ../tmp/$UUID/$VARIANTS-values.yaml --values ../tmp/$UUID/$ENVIRONMENT-$APPLICATION-values.yaml
 
 helm repo index --url https://tatroc.github.io/helm-package-example/ .
 cat index.yaml
 git add .
 git commit -m 'new helm package'
 git push
+
+
