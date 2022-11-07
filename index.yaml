@@ -3,7 +3,7 @@ entries:
   argocd:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-11-07T08:39:45.425979531-06:00"
+    created: "2022-11-07T09:14:24.033850553-06:00"
     description: A Helm chart for Kubernetes
     digest: 5e9242cd444b9f9be46927e4b4992d4524c74185614e42b705f88cb499ea7dfc
     name: argocd
@@ -14,7 +14,7 @@ entries:
   helm-test-chart:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-11-07T08:39:45.431508444-06:00"
+    created: "2022-11-07T09:14:24.042616172-06:00"
     description: A Helm chart for Kubernetes
     digest: 7af6570ceaa3faf24e9f08f965b872316a365e4a0d4a9d5e07f2d42f47c38c62
     name: helm-test-chart
@@ -25,7 +25,17 @@ entries:
   pythonapp:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-11-07T08:39:45.435872571-06:00"
+    created: "2022-11-07T09:14:24.057566413-06:00"
+    description: A Helm chart for Kubernetes
+    digest: 86df9753e674341bd830450e4089e2ac3068bd4fff2dd8c9806f66a7bd064599
+    name: pythonapp
+    type: application
+    urls:
+    - https://tatroc.github.io/helm-package-example/pythonapp-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-11-07T09:14:24.052271193-06:00"
     description: A Helm chart for Kubernetes
     digest: 8269562f3858b2023b861be32084d34a1bfcb756da1ff962de1a41afc796b84e
     name: pythonapp
@@ -33,4 +43,4 @@ entries:
     urls:
     - https://tatroc.github.io/helm-package-example/pythonapp-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-07T08:39:45.411895384-06:00"
+generated: "2022-11-07T09:14:24.022588088-06:00"

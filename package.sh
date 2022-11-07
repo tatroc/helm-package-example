@@ -61,12 +61,12 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-echo "ENVIRONMENT $ENVIRONMENT"
-echo "CLUSTER $CLUSTER"
-echo "REGION $REGION"
-echo "VARIANTS $VARIANTS"
-echo "CLUSTER_TYPE $CLUSTER_TYPE"
-echo "APPLICATION $APPLICATION"
+echo "ENVIRONMENT:  $ENVIRONMENT"
+echo "CLUSTER:      $CLUSTER"
+echo "REGION:       $REGION"
+echo "VARIANTS:     $VARIANTS"
+echo "CLUSTER_TYPE: $CLUSTER_TYPE"
+echo "APPLICATION:  $APPLICATION"
 
 mkdir -p ../tmp/$UUID
 
@@ -87,7 +87,11 @@ helm package ../tmp/$UUID/
 
 helm install --dry-run \
 --set docker_hub_secret=$DOCKER_HUB_SECRET \
---debug $APPLICATION ../tmp/$UUID/ --values ../tmp/$UUID/common-values.yaml --values ../tmp/$UUID/$REGION-values.yaml --values ../tmp/$UUID/$VARIANTS-values.yaml --values ../tmp/$UUID/$ENVIRONMENT-$APPLICATION-values.yaml
+--debug $APPLICATION ../tmp/$UUID/ \
+--values ../tmp/$UUID/common-values.yaml \
+--values ../tmp/$UUID/$REGION-values.yaml \
+--values ../tmp/$UUID/$VARIANTS-values.yaml \
+--values ../tmp/$UUID/$ENVIRONMENT-$APPLICATION-values.yaml
 
 helm repo index --url https://tatroc.github.io/helm-package-example/ .
 cat index.yaml

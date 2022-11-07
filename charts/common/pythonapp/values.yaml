@@ -1,4 +1,0 @@
-namespace: test
-#pull_secret_name: regcred
-color: green
-image_tag: pydemoapp-1.0
