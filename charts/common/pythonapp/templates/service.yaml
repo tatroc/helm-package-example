@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: python-app-service-{{ .Values.color }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.name }}-{{ .Values.environment }}
   labels:
     class: {{ .Values.class }}
     environment: {{ .Values.environment }}
