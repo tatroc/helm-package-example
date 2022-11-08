@@ -7,6 +7,12 @@ parameters {
         string(name: 'CRED_AZURE_CLOUD', defaultValue: 'azure-svc-tatro-demo')
         string(name: 'CRED_AWS_CLOUD', defaultValue: 'ctatro-jenkins_aws_ktpsbx')
         //string(name: 'BUILD_ENVIRONMENT', defaultValue: '')
+        string(name: 'ENVIRONMENT', defaultValue: 'qat')
+        string(name: 'CLUSTER', defaultValue: '')
+        string(name: 'REGION', defaultValue: 'us-east-2')
+        string(name: 'VARIANTS', defaultValue: 'npd')
+        string(name: 'CLUSTER_TYPE', defaultValue: 'common')
+        string(name: 'APPLICATION', defaultValue: 'pythonapp')
 
         booleanParam(name: 'ENABLE_SNYK_TEST', defaultValue: true)
         booleanParam(name: 'ENABLE_LINT_TEST', defaultValue: true)
@@ -50,7 +56,12 @@ parameters {
         // ARM_TENANT_ID = credentials('AZURE_TENANT_ID')
         // ARM_CLIENT_SECRET = "$CRED_AZURE_CLOUD_PSW"
         // ARM_CLIENT_ID = "$CRED_AZURE_CLOUD_USR"
-
+        ENVIRONMENT = "$ENVIRONMENT"
+        REGION = "$REGION"
+        VARIANTS = "$VARIANTS"
+        CLUSTER_TYPE = "$CLUSTER_TYPE"
+        APPLICATION = "$APPLICATION"
+        CLUSTER = "$CLUSTER"
 
         CRED_AWS_CLOUD = credentials("${CRED_AWS_CLOUD}")
         AWS_CLOUD_USERNAME = "$CRED_AWS_CLOUD_USR"
@@ -61,19 +72,37 @@ parameters {
     }
 
     stages {
-        stage('Build') {
+
+        stage ('Prerequisites'){
             steps {
-                echo 'Building..'
+                sh "ls -la"
+                sh "mkdir -p ./tmp/$MY_UUID"
             }
         }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
+
+
+
+        stage('Snyk IaC Security Test') {
+                when {
+                    allOf {
+                        expression { return params.ENABLE_SNYK_TEST }
+                        not { branch 'main' }
+                    }
+                }
+                steps {
+                    sh "package.sh --stage-files yes"
+                    sh "helm template ./$CLUSTER_TYPE/$APPLICATION --output-dir ./tmp/$MY_UUID/output"
+                    sh "snyk iac test ./tmp/$MY_UUID/output"
+                    //dir("${params.SCM_REPO}") {
+                    // echo 'Security Testing IaC...'
+                    //sh "${BUILD_SCRIPT_DIR}/snyke-test.sh"
+                    //}
+                }
             }
-        }
+
         stage('Deploy') {
             steps {
-
+                // configure secret file credential
                 withCredentials([file(credentialsId: 'education-eks-qEGL8L5J-kube-config-file', variable: 'KUBECONFIG')]) {
                     sh 'kubectl version'
                     sh 'kubectl config use-context arn:aws:eks:us-east-2:725337377563:cluster/education-eks-qEGL8L5J'

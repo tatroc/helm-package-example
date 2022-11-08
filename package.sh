@@ -8,9 +8,10 @@ ARGUMENT_LIST=(
   "variants"
   "cluster-type"
   "application"
+  "stage-files"
 )
 
-UUID=$(uuidgen)
+#UUID=$(uuidgen)
 
 
 # read arguments
@@ -55,6 +56,11 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
 
+    --stage-files)
+      STAGE_FILES=$2
+      shift 2
+      ;;
+
     *)
       break
       ;;
@@ -67,31 +73,49 @@ echo "REGION:       $REGION"
 echo "VARIANTS:     $VARIANTS"
 echo "CLUSTER_TYPE: $CLUSTER_TYPE"
 echo "APPLICATION:  $APPLICATION"
+echo "STAGE_FILES:  $STAGE_FILES"
 
-mkdir -p ../tmp/$UUID
 
-cp -r charts/$CLUSTER_TYPE/$APPLICATION/* ../tmp/$UUID
+stage_files () {
 
-cp common/values.yaml ../tmp/$UUID/common-values.yaml
-cp region/$REGION/values.yaml ../tmp/$UUID/$REGION-values.yaml
-cp variants/$VARIANTS/values.yaml ../tmp/$UUID/$VARIANTS-values.yaml
+  
+    echo "stage():: staging files"
 
-if [[ -z "${CLUSTER}" ]]; then
-  cp env/$ENVIRONMENT/$APPLICATION/values.yaml ../tmp/$UUID/$ENVIRONMENT-$APPLICATION-values.yaml
-else
-  cp env/$ENVIRONMENT/$CLUSTER/values.yaml ../tmp/$UUID/$ENVIRONMENT-$CLUSTER-values.yaml
+    mkdir -p ./tmp/$MY_UUID
+
+    cp -r charts/$CLUSTER_TYPE/$APPLICATION/* ./tmp/$MY_UUID
+
+    cp common/values.yaml ./tmp/$MY_UUID/common-values.yaml
+    cp region/$REGION/values.yaml ./tmp/$MY_UUID/$REGION-values.yaml
+    cp variants/$VARIANTS/values.yaml ./tmp/$MY_UUID/$VARIANTS-values.yaml
+
+    if [[ -z "${CLUSTER}" ]]; then
+      cp env/$ENVIRONMENT/$APPLICATION/values.yaml ./tmp/$MY_UUID/$ENVIRONMENT-$APPLICATION-values.yaml
+    else
+      cp env/$ENVIRONMENT/$CLUSTER/values.yaml ./tmp/$MY_UUID/$ENVIRONMENT-$CLUSTER-values.yaml
+    fi
+
+}
+
+if [[ "$STAGE_FILES" == "yes" ]]; then
+
+  stage_files
+  exit 0
 fi
 
-helm package ../tmp/$UUID/
+stage_files
+
+
+helm package ./tmp/$MY_UUID/
 
 
 helm install --dry-run \
 --set docker_hub_secret=$DOCKER_HUB_SECRET \
---debug $APPLICATION ../tmp/$UUID/ \
---values ../tmp/$UUID/common-values.yaml \
---values ../tmp/$UUID/$REGION-values.yaml \
---values ../tmp/$UUID/$VARIANTS-values.yaml \
---values ../tmp/$UUID/$ENVIRONMENT-$APPLICATION-values.yaml
+--debug $APPLICATION ./tmp/$MY_UUID/ \
+--values ./tmp/$UUID/common-values.yaml \
+--values ./tmp/$UUID/$REGION-values.yaml \
+--values ./tmp/$UUID/$VARIANTS-values.yaml \
+--values ./tmp/$UUID/$ENVIRONMENT-$APPLICATION-values.yaml
 
 helm repo index --url https://tatroc.github.io/helm-package-example/ .
 cat index.yaml
