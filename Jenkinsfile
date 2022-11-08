@@ -39,17 +39,17 @@ parameters {
 
         //GIT_USERNAME = credentials("github_enterprise_ctatro_username")
         //GIT_PASSWORD = credentials("github_enterprise_ctatro_pat")
-        CRED_AZURE_CLOUD = credentials("${CRED_AZURE_CLOUD}")
-        AZURE_CLOUD_USERNAME = "$CRED_AZURE_CLOUD_USR"
-        AZURE_CLOUD_PASSWORD = "$CRED_AZURE_CLOUD_PSW"
+        // CRED_AZURE_CLOUD = credentials("${CRED_AZURE_CLOUD}")
+        // AZURE_CLOUD_USERNAME = "$CRED_AZURE_CLOUD_USR"
+        // AZURE_CLOUD_PASSWORD = "$CRED_AZURE_CLOUD_PSW"
         
-        AZURE_TENANT_ID = credentials('AZURE_TENANT_ID')
-        AZURE_CLIENT_SECRET = "$CRED_AZURE_CLOUD_PSW"
-        AZURE_CLIENT_ID = "$CRED_AZURE_CLOUD_USR"
+        // AZURE_TENANT_ID = credentials('AZURE_TENANT_ID')
+        // AZURE_CLIENT_SECRET = "$CRED_AZURE_CLOUD_PSW"
+        // AZURE_CLIENT_ID = "$CRED_AZURE_CLOUD_USR"
 
-        ARM_TENANT_ID = credentials('AZURE_TENANT_ID')
-        ARM_CLIENT_SECRET = "$CRED_AZURE_CLOUD_PSW"
-        ARM_CLIENT_ID = "$CRED_AZURE_CLOUD_USR"
+        // ARM_TENANT_ID = credentials('AZURE_TENANT_ID')
+        // ARM_CLIENT_SECRET = "$CRED_AZURE_CLOUD_PSW"
+        // ARM_CLIENT_ID = "$CRED_AZURE_CLOUD_USR"
 
 
         CRED_AWS_CLOUD = credentials("${CRED_AWS_CLOUD}")
