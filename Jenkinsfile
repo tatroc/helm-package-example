@@ -74,7 +74,7 @@ pipeline {
         stage('log into kube'){
             steps {
                 // withKubeConfig([credentialsId: 'education-eks-qEGL8L5J-kube_config']) {
-                    ssh 'echo "test"'
+                    sh 'echo "test"'
                 //sh 'kubectl get all'
                 // }
             }
