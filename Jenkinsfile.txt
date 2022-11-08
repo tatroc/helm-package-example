@@ -4,16 +4,16 @@ pipeline {
     //     disableConcurrentBuilds()
     // }
 
-    parameters {
-        //string(name: 'SCM_REPO', defaultValue: 'deployment_demo')
-        //string(name: 'CRED_AZURE_CLOUD', defaultValue: 'azure-svc-tatro-demo')
-        string(name: 'CRED_AWS_CLOUD', defaultValue: 'ctatro-jenkins_aws_ktpsbx')
-        //string(name: 'BUILD_ENVIRONMENT', defaultValue: '')
+    // parameters {
+    //     //string(name: 'SCM_REPO', defaultValue: 'deployment_demo')
+    //     //string(name: 'CRED_AZURE_CLOUD', defaultValue: 'azure-svc-tatro-demo')
+    //     string(name: 'CRED_AWS_CLOUD', defaultValue: 'ctatro-jenkins_aws_ktpsbx')
+    //     //string(name: 'BUILD_ENVIRONMENT', defaultValue: '')
 
-        // booleanParam(name: 'ENABLE_SNYK_TEST', defaultValue: true)
-        // booleanParam(name: 'ENABLE_LINT_TEST', defaultValue: true)
-        // booleanParam(name: 'ENABLE_GIT_PR', defaultValue: true)
-    }
+    //     // booleanParam(name: 'ENABLE_SNYK_TEST', defaultValue: true)
+    //     // booleanParam(name: 'ENABLE_LINT_TEST', defaultValue: true)
+    //     // booleanParam(name: 'ENABLE_GIT_PR', defaultValue: true)
+    // }
 
 
     // environment {
