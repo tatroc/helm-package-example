@@ -20,7 +20,7 @@ parameters {
         //ENABLE_SNYK_TEST = false
         //ENABLE_LINT_TEST = true
         ENABLE_LOCAL_TEST = false
-        //MY_UUID = sh(script: 'uuidgen', returnStdout: true).trim()
+        MY_UUID = sh(script: 'uuidgen', returnStdout: true).trim()
         //IAC_DIR_LIST = sh(script: 'echo $RANDOM | md5sum | head -c 25; echo;', returnStdout: true).trim()
         SCM_REPO = "${params.SCM_REPO}"
         PATH = "${env.PATH}:${env.HOME}/.local/bin"
@@ -29,8 +29,8 @@ parameters {
         GH_TOKEN = credentials("github_tatroc_pat")
         //AWS_ROLE_TO_ASSUME = "jenkins_test_role"
 
-        GIT_URL_SUFIX = "${iacRepoUrl}".substring(8)
-        GIT_URL_PAT = "https://${GIT_PAT}@${GIT_URL_SUFIX}"
+        // GIT_URL_SUFIX = "${iacRepoUrl}".substring(8)
+        // GIT_URL_PAT = "https://${GIT_PAT}@${GIT_URL_SUFIX}"
         SNYK_API_TOKEN = credentials("snyk_api_token")
         SNYK_TOKEN = credentials("snyk_api_token")
         NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-certificates.crt"
@@ -75,6 +75,7 @@ parameters {
             steps {
 
                 withCredentials([file(credentialsId: 'education-eks-qEGL8L5J-kube-config-file', variable: 'KUBECONFIG')]) {
+                    sh 'kubectl version'
                     sh 'kubectl config use-context arn:aws:eks:us-east-2:725337377563:cluster/education-eks-qEGL8L5J'
                     sh 'kubectl get all'
                 }
