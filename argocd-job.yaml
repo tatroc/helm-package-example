@@ -1,0 +1,14 @@
+project: default
+source:
+  repoURL: 'https://tatroc.github.io/helm-package-example'
+  targetRevision: 0.2.0
+  helm:
+    valueFiles:
+      - common-values.yaml
+      - npd-values.yaml
+      - qat-pythonapp-values.yaml
+      - us-east-2-values.yaml
+      - values.yaml
+  chart: pythonapp
+destination:
+  server: 'https://6B2F4160156BCD4BE8B264A3FE780E52.gr7.us-east-2.eks.amazonaws.com'
