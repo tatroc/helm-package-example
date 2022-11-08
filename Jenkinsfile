@@ -22,7 +22,7 @@ pipeline {
         //ENABLE_SNYK_TEST = false
         //ENABLE_LINT_TEST = true
         ENABLE_LOCAL_TEST = false
-        UUID = sh(script: 'uuidgen', returnStdout: true).trim()
+        MY_UUID = sh(script: 'uuidgen', returnStdout: true).trim()
         //IAC_DIR_LIST = sh(script: 'echo $RANDOM | md5sum | head -c 25; echo;', returnStdout: true).trim()
         SCM_REPO = "${params.SCM_REPO}"
         PATH = "${env.PATH}:${env.HOME}/.local/bin"
