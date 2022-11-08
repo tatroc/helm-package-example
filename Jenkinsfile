@@ -64,21 +64,22 @@ pipeline {
 
 
     stages {
-    stage('Pre-Checkout Cleanup'){
-        steps {
-            sh "echo ${env.BRANCH_NAME}"
-            cleanWs()
-        }
-    }
-
-    stage('log into kube'){
-        steps {
-            withKubeConfig([credentialsId: 'education-eks-qEGL8L5J-kube_config']) {
-                sh 'kubectl get all'
+        stage('Pre-Checkout Cleanup'){
+            steps {
+                sh "echo ${env.BRANCH_NAME}"
+                cleanWs()
             }
         }
-    }
 
+        stage('log into kube'){
+            steps {
+                withKubeConfig([credentialsId: 'education-eks-qEGL8L5J-kube_config']) {
+                    //sh 'kubectl get all'
+                }
+            }
+        }
+
+    }
 
     // stage('Checkout') {
 
@@ -359,7 +360,7 @@ pipeline {
 //     //     }
 //     // }
 
-     }
+//     }
 
 
     // post {
