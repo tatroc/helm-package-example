@@ -362,11 +362,11 @@ pipeline {
      }
 
 
-    post {
-        always {
-            sh "echo ${env.BRANCH_NAME}"
-            //cleanWs disableDeferredWipeout: true, deleteDirs: true
-        }
-    }
+    // post {
+    //     always {
+    //         sh "echo ${env.BRANCH_NAME}"
+    //         //cleanWs disableDeferredWipeout: true, deleteDirs: true
+    //     }
+    // }
 }
 
