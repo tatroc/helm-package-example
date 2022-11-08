@@ -93,14 +93,17 @@ parameters {
                     sh "package.sh --stage-files yes"
                     sh "helm template ./$CLUSTER_TYPE/$APPLICATION --output-dir ./tmp/$MY_UUID/output"
                     sh "snyk iac test ./tmp/$MY_UUID/output"
-                    //dir("${params.SCM_REPO}") {
-                    // echo 'Security Testing IaC...'
-                    //sh "${BUILD_SCRIPT_DIR}/snyke-test.sh"
-                    //}
+
                 }
             }
 
         stage('Deploy') {
+            when {
+                allOf {
+                    expression { return params.ENABLE_SNYK_TEST }
+                    not { branch 'main' }
+                }
+            }
             steps {
                 // configure secret file credential
                 withCredentials([file(credentialsId: 'education-eks-qEGL8L5J-kube-config-file', variable: 'KUBECONFIG')]) {
