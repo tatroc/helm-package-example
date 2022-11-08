@@ -18,7 +18,7 @@ pipeline {
 
                 withKubeConfig([credentialsId: 'education-eks-qEGL8L5J-kube_config']) {
                     sh 'echo "test"'
-                //sh 'kubectl get all'
+                    sh 'kubectl get all'
                 }
 
 
