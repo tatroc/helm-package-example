@@ -91,7 +91,15 @@ parameters {
                 }
                 steps {
                     sh "./package.sh --stage-files yes --environment $ENVIRONMENT --region $REGION --variants $VARIANTS --cluster-type $CLUSTER_TYPE --application $APPLICATION"
-                    sh "helm template ./charts/$CLUSTER_TYPE/$APPLICATION --output-dir ./tmp/$MY_UUID/output"
+                    // sh """
+                    // VALUES=($(ls ./kubernetes_helm_demo_dev1/tmp/c50aedbb-d868-415e-8bbf-b854e6d2a4ff/*-values.yaml))
+                    // for I in "${x[@]}"
+                    // do
+                    //     VALUES=${VALUES:+$VALUES }"--values $I"
+                    // done
+                    // helm template ./charts/$CLUSTER_TYPE/$APPLICATION --output-dir ./tmp/$MY_UUID/output
+                    // """
+                    sh "./create-helm-template.sh"
                     sh "snyk iac test ./tmp/$MY_UUID/output"
 
                 }
