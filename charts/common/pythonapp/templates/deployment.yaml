@@ -7,7 +7,6 @@ metadata:
     class: {{ .Values.class }}
     environment: {{ .Values.environment }}
     region: {{ .Values.region }}
-#  namespace: default
 spec:
   selector:
     matchLabels:

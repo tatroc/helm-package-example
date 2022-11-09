@@ -10,7 +10,7 @@ done
 command="helm template ./tmp/$MY_UUID/ --output-dir ./tmp/$MY_UUID/output $VALUES"
 echo "building helm command: $command"
 
-echo "executing helm command"
+echo "create templates from helm command"
 eval $command
 
-helm template ./tmp/$MY_UUID/ --output-dir ./tmp/$MY_UUID/output
+#helm template ./tmp/$MY_UUID/ --output-dir ./tmp/$MY_UUID/output
