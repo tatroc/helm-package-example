@@ -81,21 +81,37 @@ parameters {
         }
 
 
+        stages('Code quality check'){
+            stage('Snyk IaC Security Test') {
+                    when {
+                        allOf {
+                            expression { return params.ENABLE_SNYK_TEST }
+                            not { branch 'main' }
+                        }
+                    }
+                    steps {
+                        sh "./package.sh --stage-files yes --environment $ENVIRONMENT --region $REGION --variants $VARIANTS --cluster-type $CLUSTER_TYPE --application $APPLICATION"
+                        sh "helm template ./charts/$CLUSTER_TYPE/$APPLICATION --output-dir ./tmp/$MY_UUID/output"
+                        sh "snyk iac test ./tmp/$MY_UUID/output"
 
-        stage('Snyk IaC Security Test') {
-                when {
-                    allOf {
-                        expression { return params.ENABLE_SNYK_TEST }
-                        not { branch 'main' }
                     }
                 }
-                steps {
-                    sh "./package.sh --stage-files yes --environment $ENVIRONMENT --region $REGION --variants $VARIANTS --cluster-type $CLUSTER_TYPE --application $APPLICATION"
-                    sh "helm template ./charts/$CLUSTER_TYPE/$APPLICATION --output-dir ./tmp/$MY_UUID/output"
-                    sh "snyk iac test ./tmp/$MY_UUID/output"
+                stage('helm lint') {
+                    when {
+                        allOf {
+                            expression { return params.ENABLE_LINT_TEST }
+                            not { branch 'main' }
+                        }
+                    }
+                    steps {
+                        sh "helm lint ./charts/"
+                        //sh "./package.sh --stage-files yes --environment $ENVIRONMENT --region $REGION --variants $VARIANTS --cluster-type $CLUSTER_TYPE --application $APPLICATION"
+                        //sh "helm template ./charts/$CLUSTER_TYPE/$APPLICATION --output-dir ./tmp/$MY_UUID/output"
+                        //sh "snyk iac test ./tmp/$MY_UUID/output"
 
+                    }
                 }
-            }
+        }
 
         stage('Deploy') {
             when {
