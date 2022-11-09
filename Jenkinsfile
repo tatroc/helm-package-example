@@ -113,7 +113,7 @@ parameters {
                     }
                 }
                 steps {
-                    sh "helm lint ./charts/"
+                    sh "helm lint ./tmp/$MY_UUID/"
                     //sh "./package.sh --stage-files yes --environment $ENVIRONMENT --region $REGION --variants $VARIANTS --cluster-type $CLUSTER_TYPE --application $APPLICATION"
                     //sh "helm template ./charts/$CLUSTER_TYPE/$APPLICATION --output-dir ./tmp/$MY_UUID/output"
                     //sh "snyk iac test ./tmp/$MY_UUID/output"
