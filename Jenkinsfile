@@ -100,6 +100,7 @@ parameters {
                     // helm template ./charts/$CLUSTER_TYPE/$APPLICATION --output-dir ./tmp/$MY_UUID/output
                     // """
                     sh "./create-helm-template.sh"
+                    sh "echo 'running snyk test'"
                     sh "snyk iac test ./tmp/$MY_UUID/output"
 
                 }
