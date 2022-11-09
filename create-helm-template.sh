@@ -7,6 +7,11 @@ do
     VALUES=${VALUES:+$VALUES }"--values $I"
 done
 
+
+mkdir -p ./tmp/$MY_UUID/output/$APPLICATION/templates
+
+cp charts/$CLUSTER_TYPE/$APPLICATION/.snyk ./tmp/$MY_UUID/output/$APPLICATION/templates/
+
 command="helm template ./tmp/$MY_UUID/ --output-dir ./tmp/$MY_UUID/output $VALUES"
 echo "building helm command: $command"
 
