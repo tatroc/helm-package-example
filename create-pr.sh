@@ -12,7 +12,7 @@ echo "${SCRIPT_NAME}:: Jenkins working branch: ${BRANCH_NAME}"
 
 
 
-#git checkout main
+git checkout main
 git --no-pager branch
 
 # echo "${SCRIPT_NAME}:: merge branch ${BRANCH_NAME} with master"
@@ -25,7 +25,8 @@ git --no-pager branch
   echo "${SCRIPT_NAME}:: Creating PR"
   gh auth login --hostname github.com --git-protocol https
   git checkout $BRANCH_NAME
-  gh pr create --title "Please approve my PR" --body "Please approve my PR" --base master --reviewer tatroc
+  git --no-pager branch
+  gh pr create --title "Please approve my PR" --body "Please approve my PR" --base main --reviewer tatroc
   # echo "${SCRIPT_NAME}:: merge request exit code $MR"
   # exit $MR
 # fi
