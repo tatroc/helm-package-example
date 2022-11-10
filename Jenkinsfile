@@ -91,7 +91,7 @@ stage('Checkout') {
                 branches: [
                    //[name: "**"],
                    // [name: "*/${env.BRANCH_NAME}"],
-                   // [name: "*/master"]
+                    [name: "*/master"],
                     [ name: "refs/heads/${env.BRANCH_NAME}" ]
                 ], 
                 doGenerateSubmoduleConfigurations: false,
