@@ -106,6 +106,8 @@ fi
 stage_files
 
 
+ls -la ./tmp/$MY_UUID/
+pwd
 helm package ./tmp/$MY_UUID/
 
 
@@ -119,6 +121,8 @@ helm package ./tmp/$MY_UUID/
 
 helm repo index --url https://tatroc.github.io/helm-package-example/ .
 cat index.yaml
+
+git --no-pager branch
 git add .
 git commit -m 'new helm package'
 git push
