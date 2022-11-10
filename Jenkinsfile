@@ -181,24 +181,37 @@ stage('Checkout') {
                 }
             }
 
-        stage('Deploy') {
-            when {
-                allOf {
-                    expression { return params.ENABLE_SNYK_TEST }
-                    not { branch 'main' }
+
+        stage('package and publish helm chart') {
+                when {
+                    allOf {
+                        expression { return params.ENABLE_SNYK_TEST }
+                        branch 'main'
+                    }
+                }
+                steps {
+                    sh "./package.sh --stage-files no --environment $ENVIRONMENT --region $REGION --variants $VARIANTS --cluster-type $CLUSTER_TYPE --application $APPLICATION"
                 }
             }
-            steps {
-                // configure secret file credential
-                withCredentials([file(credentialsId: 'education-eks-qEGL8L5J-kube-config-file', variable: 'KUBECONFIG')]) {
-                    sh 'kubectl version'
-                    sh 'kubectl config use-context arn:aws:eks:us-east-2:725337377563:cluster/education-eks-qEGL8L5J'
-                    sh 'kubectl get all'
-                }
+
+        // stage('Deploy') {
+        //     when {
+        //         allOf {
+        //             expression { return params.ENABLE_SNYK_TEST }
+        //             not { branch 'main' }
+        //         }
+        //     }
+        //     steps {
+        //         // configure secret file credential
+        //         withCredentials([file(credentialsId: 'education-eks-qEGL8L5J-kube-config-file', variable: 'KUBECONFIG')]) {
+        //             sh 'kubectl version'
+        //             sh 'kubectl config use-context arn:aws:eks:us-east-2:725337377563:cluster/education-eks-qEGL8L5J'
+        //             sh 'kubectl get all'
+        //         }
 
 
-                echo 'Deploying....'
-            }
-        }
+        //         echo 'Deploying....'
+        //     }
+        // }
     }
 }
