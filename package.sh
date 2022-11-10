@@ -123,10 +123,10 @@ helm repo index --url https://tatroc.github.io/helm-package-example/ .
 cat index.yaml
 
 echo "checkout branch $BRANCH_NAME"
-git checkout $BRANCH_NAME
+#git checkout $BRANCH_NAME
 git --no-pager branch
 git add .
 git commit -m 'new helm package'
-git push
+git push --set-upstream origin main
 
 
