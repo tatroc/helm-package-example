@@ -109,13 +109,13 @@ stage_files
 helm package ./tmp/$MY_UUID/
 
 
-helm install --dry-run \
---set docker_hub_secret=$DOCKER_HUB_SECRET \
---debug $APPLICATION ./tmp/$MY_UUID/ \
---values ./tmp/$UUID/common-values.yaml \
---values ./tmp/$UUID/$REGION-values.yaml \
---values ./tmp/$UUID/$VARIANTS-values.yaml \
---values ./tmp/$UUID/$ENVIRONMENT-$APPLICATION-values.yaml
+# helm install --dry-run \
+# --set docker_hub_secret=$DOCKER_HUB_SECRET \
+# --debug $APPLICATION ./tmp/$MY_UUID/ \
+# --values ./tmp/$MY_UUID/common-values.yaml \
+# --values ./tmp/$MY_UUID/$REGION-values.yaml \
+# --values ./tmp/$MY_UUID/$VARIANTS-values.yaml \
+# --values ./tmp/$MY_UUID/$ENVIRONMENT-$APPLICATION-values.yaml
 
 helm repo index --url https://tatroc.github.io/helm-package-example/ .
 cat index.yaml
