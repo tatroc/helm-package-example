@@ -73,6 +73,13 @@ parameters {
 
     stages {
 
+    stage('Pre-Checkout Cleanup'){
+        steps {
+            sh "echo ${env.BRANCH_NAME}"
+            cleanWs()
+        }
+    }
+
 stage('Checkout') {
 
         steps {
@@ -84,13 +91,13 @@ stage('Checkout') {
                 branches: [
                    //[name: "**"],
                    // [name: "*/${env.BRANCH_NAME}"],
-                    //[name: "*/master"]
+                   // [name: "*/master"]
                     [ name: "refs/heads/${env.BRANCH_NAME}" ]
                 ], 
                 doGenerateSubmoduleConfigurations: false,
                 extensions: [
-                    // [$class: 'LocalBranch', 
-                    // localBranch: "*/master"],
+                    [$class: 'LocalBranch', 
+                    localBranch: "*/master"],
 
                     // [$class: 'CloneOption',
                     // depth: 0,
@@ -102,6 +109,8 @@ stage('Checkout') {
                 userRemoteConfigs: [[credentialsId: '', url: "https://${GIT_PAT}@github.com/tatroc/helm-package-example.git" ]]])
             //cleanWs disableDeferredWipeout: true, deleteDirs: true
             //sh "echo ${env.PATH2}"
+
+            sh "git --no-pager branch"
            
         }
     }

@@ -12,7 +12,7 @@ echo "${SCRIPT_NAME}:: Jenkins working branch: ${BRANCH_NAME}"
 
 
 
-git checkout master
+#git checkout master
 git --no-pager branch
 
 # echo "${SCRIPT_NAME}:: merge branch ${BRANCH_NAME} with master"
