@@ -96,8 +96,8 @@ stage('Checkout') {
                 ], 
                 doGenerateSubmoduleConfigurations: false,
                 extensions: [
-                    [$class: 'LocalBranch', 
-                    localBranch: "*/master"],
+                    // [$class: 'LocalBranch', 
+                    // localBranch: "*/master"],
 
                     // [$class: 'CloneOption',
                     // depth: 0,
