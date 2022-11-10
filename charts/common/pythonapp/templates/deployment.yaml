@@ -19,6 +19,7 @@ spec:
         class: {{ .Values.class }}
         environment: {{ .Values.environment }}
         region: {{ .Values.region }}
+        version: {{ .Values.version }}
     spec:
       containers:
         - name: {{ printf "python-app-%s" .Values.color }}
