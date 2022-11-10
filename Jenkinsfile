@@ -73,6 +73,49 @@ parameters {
 
     stages {
 
+    stage('Pre-Checkout Cleanup'){
+        steps {
+            sh "echo ${env.BRANCH_NAME}"
+            cleanWs()
+        }
+    }
+
+stage('Checkout') {
+
+        steps {
+            //sh "####################################"
+            //sh "echo ${TEST}"
+            //sh "####################################"
+                sh "echo branch name ${env.BRANCH_NAME}"
+                checkout([$class: 'GitSCM', 
+                branches: [
+                   //[name: "**"],
+                   // [name: "*/${env.BRANCH_NAME}"],
+                    //[name: "*/main"],
+                    [ name: "refs/heads/${env.BRANCH_NAME}" ]
+                ], 
+                doGenerateSubmoduleConfigurations: false,
+                extensions: [
+                    // [$class: 'LocalBranch', 
+                    // localBranch: "*/${env.BRANCH_NAME}"],
+
+                    // [$class: 'CloneOption',
+                    // depth: 0,
+                    // noTags: false,
+                    // reference: '',
+                    // shallow: false]
+                ],
+                submoduleCfg: [],
+                userRemoteConfigs: [[credentialsId: '', url: "https://${GIT_PAT}@github.com/tatroc/helm-package-example.git" ]]])
+            //cleanWs disableDeferredWipeout: true, deleteDirs: true
+            //sh "echo ${env.PATH2}"
+
+            sh "git --no-pager branch"
+           
+        }
+    }
+
+
         stage ('Prerequisites'){
             steps {
                 sh "ls -la"
@@ -90,17 +133,61 @@ parameters {
                     }
                 }
                 steps {
-                    sh "package.sh --stage-files yes"
-                    sh "helm template ./$CLUSTER_TYPE/$APPLICATION --output-dir ./tmp/$MY_UUID/output"
+                    sh "./package.sh --stage-files yes --environment $ENVIRONMENT --region $REGION --variants $VARIANTS --cluster-type $CLUSTER_TYPE --application $APPLICATION"
+                    // sh """
+                    // VALUES=($(ls ./kubernetes_helm_demo_dev1/tmp/c50aedbb-d868-415e-8bbf-b854e6d2a4ff/*-values.yaml))
+                    // for I in "${x[@]}"
+                    // do
+                    //     VALUES=${VALUES:+$VALUES }"--values $I"
+                    // done
+                    // helm template ./charts/$CLUSTER_TYPE/$APPLICATION --output-dir ./tmp/$MY_UUID/output
+                    // """
+                    sh "./create-helm-template.sh"
+                    sh "echo 'running snyk test'"
                     sh "snyk iac test ./tmp/$MY_UUID/output"
-                    //dir("${params.SCM_REPO}") {
-                    // echo 'Security Testing IaC...'
-                    //sh "${BUILD_SCRIPT_DIR}/snyke-test.sh"
-                    //}
+
+                }
+            }
+            stage('helm lint') {
+                when {
+                    allOf {
+                        expression { return params.ENABLE_LINT_TEST }
+                        not { branch 'main' }
+                    }
+                }
+                steps {
+                    sh "./helm-lint.sh"
+                    //sh "./package.sh --stage-files yes --environment $ENVIRONMENT --region $REGION --variants $VARIANTS --cluster-type $CLUSTER_TYPE --application $APPLICATION"
+                    //sh "helm template ./charts/$CLUSTER_TYPE/$APPLICATION --output-dir ./tmp/$MY_UUID/output"
+                    //sh "snyk iac test ./tmp/$MY_UUID/output"
+
+                }
+            }
+
+
+            stage('create PR') {
+                when {
+                    allOf {
+                        expression { return params.ENABLE_GIT_PR }
+                        not { branch 'main' }
+                    }
+                }
+                steps {
+                    sh "./create-pr.sh"
+                    //sh "./package.sh --stage-files yes --environment $ENVIRONMENT --region $REGION --variants $VARIANTS --cluster-type $CLUSTER_TYPE --application $APPLICATION"
+                    //sh "helm template ./charts/$CLUSTER_TYPE/$APPLICATION --output-dir ./tmp/$MY_UUID/output"
+                    //sh "snyk iac test ./tmp/$MY_UUID/output"
+
                 }
             }
 
         stage('Deploy') {
+            when {
+                allOf {
+                    expression { return params.ENABLE_SNYK_TEST }
+                    not { branch 'main' }
+                }
+            }
             steps {
                 // configure secret file credential
                 withCredentials([file(credentialsId: 'education-eks-qEGL8L5J-kube-config-file', variable: 'KUBECONFIG')]) {

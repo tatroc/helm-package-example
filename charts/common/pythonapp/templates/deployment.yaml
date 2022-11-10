@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: python-app-{{ .Values.color }}
-  namespace: "{{ .Values.name }}:-:{{ .Values.environment }}"
+  name: {{ printf "python-app-%s"  .Values.color }}
+  namespace: {{ printf "%s-%s" .Values.name .Values.environment }}
   labels:
     class: {{ .Values.class }}
     environment: {{ .Values.environment }}
     region: {{ .Values.region }}
-#  namespace: default
 spec:
   selector:
     matchLabels:
-      app: python-app-{{ .Values.color }}
+      app: {{ printf "python-app-%s" .Values.color }}
   replicas: 1
   template:
     metadata:
       labels:
-        app: python-app-{{ .Values.color }}
+        app: {{ printf "python-app-%s" .Values.color }}
         class: {{ .Values.class }}
         environment: {{ .Values.environment }}
         region: {{ .Values.region }}
+        version: {{ .Values.version }}
     spec:
       containers:
-        - name: python-app-{{ .Values.color }}
-          image: "tatroc/private:{{ .Values.image_tag }}"
+        - name: {{ printf "python-app-%s" .Values.color }}
+          image: {{ printf "tatroc/private:%s" .Values.image_tag }}
           imagePullPolicy: Always
           ports:
             - name: web
