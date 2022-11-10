@@ -73,6 +73,40 @@ parameters {
 
     stages {
 
+stage('Checkout') {
+
+        steps {
+            //sh "####################################"
+            //sh "echo ${TEST}"
+            //sh "####################################"
+                sh "echo branch name ${env.BRANCH_NAME}"
+                checkout([$class: 'GitSCM', 
+                branches: [
+                   //[name: "**"],
+                   // [name: "*/${env.BRANCH_NAME}"],
+                    //[name: "*/master"]
+                    [ name: "refs/heads/${env.BRANCH_NAME}" ]
+                ], 
+                doGenerateSubmoduleConfigurations: false,
+                extensions: [
+                    // [$class: 'LocalBranch', 
+                    // localBranch: "*/master"],
+
+                    // [$class: 'CloneOption',
+                    // depth: 0,
+                    // noTags: false,
+                    // reference: '',
+                    // shallow: false]
+                ],
+                submoduleCfg: [],
+                userRemoteConfigs: [[credentialsId: '', url: "https://${GIT_PAT}@github.com/tatroc/helm-package-example.git" ]]])
+            //cleanWs disableDeferredWipeout: true, deleteDirs: true
+            //sh "echo ${env.PATH2}"
+           
+        }
+    }
+
+
         stage ('Prerequisites'){
             steps {
                 sh "ls -la"
@@ -125,7 +159,7 @@ parameters {
             stage('create PR') {
                 when {
                     allOf {
-                        //expression { return params.ENABLE_LINT_TEST }
+                        expression { return params.ENABLE_GIT_PR }
                         not { branch 'main' }
                     }
                 }

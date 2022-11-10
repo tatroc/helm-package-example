@@ -10,6 +10,8 @@ pwd
 
 echo "${SCRIPT_NAME}:: Jenkins working branch: ${BRANCH_NAME}"
 
+
+git --no-pager branch
 # git checkout master
 # git --no-pager branch
 
