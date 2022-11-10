@@ -91,13 +91,13 @@ stage('Checkout') {
                 branches: [
                    //[name: "**"],
                    // [name: "*/${env.BRANCH_NAME}"],
-                    [name: "*/main"],
+                    //[name: "*/main"],
                     [ name: "refs/heads/${env.BRANCH_NAME}" ]
                 ], 
                 doGenerateSubmoduleConfigurations: false,
                 extensions: [
-                    // [$class: 'LocalBranch', 
-                    // localBranch: "*/master"],
+                    [$class: 'LocalBranch', 
+                    localBranch: "*/${env.BRANCH_NAME}"],
 
                     // [$class: 'CloneOption',
                     // depth: 0,
