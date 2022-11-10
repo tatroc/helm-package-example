@@ -97,7 +97,7 @@ stage('Checkout') {
                 doGenerateSubmoduleConfigurations: false,
                 extensions: [
                     [$class: 'LocalBranch', 
-                    localBranch: "*/${env.BRANCH_NAME}"]
+                    localBranch: "${env.BRANCH_NAME}"]
 
                     // [$class: 'CloneOption',
                     // depth: 0,
