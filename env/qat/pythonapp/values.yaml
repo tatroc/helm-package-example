@@ -3,4 +3,4 @@ image_tag: pydemoapp-1.0
 #namespace: pydemoapp
 name: pydemoapp
 environment: qat
-version: "3"
+version: "4"
