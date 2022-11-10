@@ -122,6 +122,22 @@ parameters {
             }
 
 
+            stage('create PR') {
+                when {
+                    allOf {
+                        //expression { return params.ENABLE_LINT_TEST }
+                        not { branch 'main' }
+                    }
+                }
+                steps {
+                    sh "./create-pr.sh"
+                    //sh "./package.sh --stage-files yes --environment $ENVIRONMENT --region $REGION --variants $VARIANTS --cluster-type $CLUSTER_TYPE --application $APPLICATION"
+                    //sh "helm template ./charts/$CLUSTER_TYPE/$APPLICATION --output-dir ./tmp/$MY_UUID/output"
+                    //sh "snyk iac test ./tmp/$MY_UUID/output"
+
+                }
+            }
+
         stage('Deploy') {
             when {
                 allOf {
